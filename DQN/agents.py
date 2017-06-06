@@ -38,6 +38,7 @@ class DQN(object):
         with tf.variable_scope('start'):
             x = tf.layers.dense(state, H0, name='M1', kernel_initializer=self.xavier)
             x = tf.layers.batch_normalization(x, training=self.learn_phase)
+            x = tf.nn.elu(x)
             x = tf.layers.dense(x, H1, name='M2', kernel_initializer=self.xavier)
             out = tf.nn.elu(x)
 
