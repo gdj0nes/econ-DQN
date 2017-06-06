@@ -2,7 +2,7 @@ import os
 
 # os.environ['CUDA_VISIBLE_DEVICES'] = ""
 
-from DQN import LifeTimeModel
+from model import LifeTimeModel
 
 model = LifeTimeModel('uniform-assets')
 

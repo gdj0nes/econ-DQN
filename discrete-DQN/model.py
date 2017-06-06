@@ -28,11 +28,12 @@ class LifeTimeModel(object):
         self.episode_size = 256
 
         # Environment
+        num_assets = 40
         self.action_dim = 20
         self.life_span = 35
         self.R = 1.03
         self.gamma = 1.5
-        self.env = LifeCycle(self.gamma, self.R, self.life_span, self.episode_size, self.action_dim)
+        self.env = LifeCycle(self.gamma, self.R, self.life_span, self.episode_size,  self.action_dim, num_assets)
         self.state_dim = self.env.state_size
         self.episodes = int(9e5)
         self.eval_freq = 1000
@@ -45,7 +46,7 @@ class LifeTimeModel(object):
         # Model
         self.pre_fill = 100 * self.batch_size
         self.update_freq = self.episode_size * 10  # TODO: this needs to be multiple of episode size
-        self.save_freq = self.update_freq * 10
+        self.save_freq = self.update_freq * 15
         self.sess = tf.Session()
         actGrid = self.env.actGrid
         self.DQN = DQN(self.sess, self.log_path, learning_rate, self.action_dim, self.state_dim, beta, actGrid)

@@ -1,1 +1,8 @@
 logs/
+continuous-DDPG-v2/
+discrete-DQN-v2/
+econWork/
+WriteUp/
+*.pyc
+.ipynb_checkpoints/
+/.idea/

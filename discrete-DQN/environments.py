@@ -15,7 +15,7 @@ class LifeCycle(object):
     
     
     """
-    def __init__(self, gamma, R, life_span, batch_size, act_dim, delta=.0001):
+    def __init__(self, gamma, R, life_span, batch_size, act_dim, num_assets=40, delta=.0001):
 
         # Global environment parameters
         self.state_size = 4
@@ -27,14 +27,13 @@ class LifeCycle(object):
 
         # Action grid
         self.actGrid = np.linspace(delta, 1 - delta, act_dim)
-        # print self.actGrid
         # Shock grid
         self.shocks = np.array([-.325, 0, .325])
         # Skill grid
         self.skGrid = np.array([-0.245, 0, 0.245])
         # Asset Grid
         aLimit = 0.0
-        numA = 50
+        numA = num_assets
         aMax = 25
         alpha = 0.3
         z = np.linspace(0, 1, numA)
