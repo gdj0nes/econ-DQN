@@ -32,8 +32,8 @@ class DQN(object):
     # noinspection PyAttributeOutsideInit
     def build_network(self, state):
 
-        H0 = 100
-        H1 = 200
+        H0 = 50
+        H1 = 100
 
         with tf.variable_scope('start'):
             x = tf.layers.dense(state, H0, name='M1', kernel_initializer=self.xavier)

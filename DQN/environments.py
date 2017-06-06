@@ -18,7 +18,7 @@ class LifeCycle(object):
     def __init__(self, gamma, R, life_span, batch_size, act_dim, num_assets=40, delta=.0001):
 
         # Global environment parameters
-        self.state_size = 4
+        self.state_size = 2
         self.batch_size = batch_size
         self.life_span = life_span
         self.periods = life_span
@@ -95,5 +95,6 @@ class LifeCycle(object):
 
     @property
     def state(self):
+        # return np.vstack([self.savings, self.age, self.skill, self.cash]).T
 
-        return np.vstack([self.savings, self.age, self.skill, self.cash]).T
+        return np.vstack([self.age, self.cash]).T
