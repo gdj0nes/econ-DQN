@@ -34,8 +34,8 @@ class LifeCycle(object):
         self.skGrid = np.array([-0.245, 0, 0.245])
         # Asset Grid
         aLimit = 0.0
-        numA = 150
-        aMax = 50
+        numA = 50
+        aMax = 25
         alpha = 0.3
         z = np.linspace(0, 1, numA)
         # self.aGrid = aLimit + aMax * (1 - (z ** alpha))

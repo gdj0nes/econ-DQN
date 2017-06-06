@@ -20,6 +20,7 @@ class LifeTimeModel(object):
         self.name = name
         self.log_path = os.path.join('logs', name)
         print self.log_path
+
         # Network parameters start here
         self.delta = 1e-4
         self.batch_size = batch_size
@@ -27,7 +28,7 @@ class LifeTimeModel(object):
         self.episode_size = 256
 
         # Environment
-        self.action_dim = 100
+        self.action_dim = 20
         self.life_span = 35
         self.R = 1.03
         self.gamma = 1.5
@@ -66,13 +67,13 @@ class LifeTimeModel(object):
                     action = np.random.randint(0, self.action_dim, size=self.episode_size)
                 else:
                     action = self.sess.run(DQN.predict, {DQN.state: s})
-                    rand = np.random.randint(-2, 3)
-                    if rand + action > self.action_dim:
-                        action = action - (rand % action)
-                    elif rand + action < self.action_dim:
-                        action = abs(rand)
-                    else:
-                        action += rand
+                    # rand = np.random.randint(-2, 3)
+                    # if rand + action > self.action_dim:
+                    #     action = action - (rand % action)
+                    # elif rand + action < self.action_dim:
+                    #     action = abs(rand)
+                    # else:
+                    #     action += rand
 
                 reward, s1, term = self.env.step(action)
                 reward[reward < -20] = -20
@@ -84,7 +85,7 @@ class LifeTimeModel(object):
                 if (self.buffer.count > self.pre_fill) and (total_steps % self.update_freq == 0):
                     batch = self.buffer.sample()
                     DQN.update_model(batch)
-                    self.e = max(self.e * 0.9999, 0.1)
+                    self.e = max(self.e * 0.999, 0.1)
                     if total_steps % self.save_freq == 0:
                         self.saver.save(self.sess, self.log_path)
 

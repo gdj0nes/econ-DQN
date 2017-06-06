@@ -2,6 +2,7 @@ import tensorflow as tf
 
 
 class DQN(object):
+
     def __init__(self, sess, logdir, learning_rate, action_dim, state_dim, beta, act_grid, tau=0.001):
         self.sess = sess or tf.get_default_session()
         self.learning_rate = learning_rate
@@ -53,7 +54,7 @@ class DQN(object):
             advantage = tf.layers.dense(aX, self.action_dim, name='FC2', kernel_initializer=self.xavier)
 
         # Merge the two branches
-        Qout = value + tf.subtract(advantage, tf.reduce_mean(advantage))
+        Qout = value + tf.subtract(advantage, tf.reduce_mean(advantage, axis=1, keep_dims=True))
         prediction = tf.argmax(Qout, axis=1)
 
         return prediction, Qout
@@ -95,6 +96,7 @@ class DQN(object):
             update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
             with tf.control_dependencies(update_ops):
                 self.train = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
+                # TODO: figure out what the bounds for the gradient ought to be
                 # train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="QNetwork")
                 # optimizer = tf.train.AdamOptimizer(self.learning_rate)
                 # gvs = optimizer.compute_gradients(self.loss, train_vars)
@@ -131,14 +133,18 @@ class DQN(object):
         doubleQ = Q_values[range(batch_size), Q_actions]  # Get Q-values corresponding to actions
         targetQ = r_batch + (self.beta * doubleQ * -t_batch)  # TODO: determine negation procedure
 
-        feed = {self.state: pre_s, self.targetQ: targetQ, self.action: a_batch}
+        # Whether to produce summary
         if self.training_step % self.sum_freq == 0:
             op = self.train_summary_op
         else:
             op = self.no_op
+
+        # Perform update op
+        feed = {self.state: pre_s, self.targetQ: targetQ, self.action: a_batch}
         _, summary = sess.run([self.train, op], feed)
 
         sess.run(self.test_phase)
         sess.run(self.target_update)
+
         self.writer.add_summary(summary, global_step=self.training_step)
         self.training_step += 1
