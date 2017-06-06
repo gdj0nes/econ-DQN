@@ -67,7 +67,9 @@ class LifeTimeModel(object):
                 if self.e > np.random.rand():
                     action = np.random.randint(0, self.action_dim, size=self.episode_size)
                 else:
-                    action = self.sess.run(DQN.predict, {DQN.state: s})
+                    action = self.sess.run(DQN.prob_predict, {DQN.state: s})
+                    action = np.squeeze(action)
+                    # action = DQN.sample_action(s)
                     # rand = np.random.randint(-2, 3)
                     # if rand + action > self.action_dim:
                     #     action = action - (rand % action)

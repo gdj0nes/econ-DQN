@@ -74,6 +74,7 @@ class DQN(object):
         # Define Q-Network forward pass
         with tf.variable_scope('QNetwork'):
             self.predict, self.Qout = self.build_network(self.state)
+            self.prob_predict = tf.multinomial(tf.nn.softmax(self.Qout), 1)
 
         tf.summary.histogram('actions', self.predict, collections=['train'])
         tf.summary.histogram('savings', tf.gather(self.act_grid, self.predict), collections=['train'])
