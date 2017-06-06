@@ -4,6 +4,6 @@ import os
 
 from model import LifeTimeModel
 
-model = LifeTimeModel('uniform-assets')
+model = LifeTimeModel('low-assets')
 
 model.train()

@@ -34,7 +34,7 @@ class LifeCycle(object):
         # Asset Grid
         aLimit = 0.0
         numA = num_assets
-        aMax = 25
+        aMax = 5
         alpha = 0.3
         z = np.linspace(0, 1, numA)
         # self.aGrid = aLimit + aMax * (1 - (z ** alpha))
